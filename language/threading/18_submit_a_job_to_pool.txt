@@ -1,0 +1,22 @@
+from concurrent.futures import ProcessPoolExecutor
+
+# Some function
+def work(x):
+
+	...
+
+    return result
+
+with ProcessPoolExecutor() as pool:
+
+    ...
+
+    # Example of submitting work to the pool
+    future_result = pool.submit(work, arg)
+
+    ...
+
+    # Obtaining the result (blocks until done)
+    r = future_result.result()
+
+    ...

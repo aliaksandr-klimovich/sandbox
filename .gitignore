@@ -1,0 +1,8 @@
+*.pyc
+.idea/
+.cache/
+.pytest_cache/
+.vscode/
+.DS_Store
+/Default/
+/test-output/
