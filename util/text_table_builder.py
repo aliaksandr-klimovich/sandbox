@@ -1,5 +1,6 @@
 from functools import wraps
-from typing import Union, Iterator, Tuple, List, Type
+from typing import Union
+from collections.abc import Iterator
 
 
 # def cached(f):
@@ -144,9 +145,9 @@ class TextTableBuilder:
     # todo introduce word wrap functionality
 
     def __init__(self,
-                 header: Union[Tuple, List],
-                 data: Union[Tuple[Iterator], List[Iterator]],
-                 style: Type[TextTableStyle] = SimpleTextTableStyle,
+                 header: Union[tuple, list],
+                 data: Union[tuple[Iterator], list[Iterator]],
+                 style: type[TextTableStyle] = SimpleTextTableStyle,
                  min_cell_width: int = 0,
                  insert_header_every_n_rows: int = 20,
                  insert_header_at_the_bottom: bool = False,
