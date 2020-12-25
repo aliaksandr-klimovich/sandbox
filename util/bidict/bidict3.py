@@ -84,8 +84,8 @@ if __name__ == '__main__':
             self.assertEqual(d._storage, [('a', 1)])
 
         def test_kwarg(self):
-            d = BiDict(a=1)
-            self.assertEqual(d._storage, [('a', 1)])
+            d = BiDict(a=1, b=2)
+            self.assertEqual(d._storage, [('a', 1), ('b', 2)])
 
         def test_dict_kwarg(self):
             d = BiDict({'a': 1}, b=2)
@@ -136,61 +136,65 @@ if __name__ == '__main__':
                 BiDict({'a': 1}, b=1)
 
     class TestSetItem(unittest.TestCase):
+        def setUp(self):
+            self.bd = BiDict()
+
         def test_one_item(self):
-            d = BiDict()
-            d['a'] = 1
-            self.assertEqual(d._storage, [('a', 1)])
+            self.bd['a'] = 1
+            self.assertEqual(self.bd._storage, [('a', 1)])
 
         def test_two_items(self):
             """Test sequence in which the items are added/stored"""
-            d = BiDict()
-            d['b'] = 1
-            d['a'] = 2
-            self.assertEqual(d._storage, [('b', 1), ('a', 2)])
+            self.bd['b'] = 1
+            self.bd['a'] = 2
+            self.assertEqual(self.bd._storage, [('b', 1), ('a', 2)])
 
         def test_rewrite_by_key(self):
-            d = BiDict(a=1)
-            d[1] = 'c'
-            self.assertEqual(d._storage, [(1, 'c')])
+            self.bd['a'] = 1
+            self.bd[1] = 'c'
+            self.assertEqual(self.bd._storage, [(1, 'c')])
 
         def test_rewrite_by_value(self):
-            d = BiDict(a=1)
-            d['a'] = 2
-            self.assertEqual(d._storage, [('a', 2)])
+            self.bd['a'] = 1
+            self.bd['a'] = 2
+            self.assertEqual(self.bd._storage, [('a', 2)])
 
         def test_rewrite_by_key_and_value(self):
-            d = BiDict(a=1, b=2)
-            d[2] = 1
-            self.assertEqual(d._storage, [(2, 1)])
+            self.bd['a'] = 1
+            self.bd['b'] = 2
+            self.bd[2] = 1
+            self.assertEqual(self.bd._storage, [(2, 1)])
 
     class TestGetItem(unittest.TestCase):
+        def setUp(self):
+            self.bd = BiDict()
+
         def test_by_key(self):
-            d = BiDict(a=1)
-            self.assertEqual(d['a'], 1)
+            self.bd['a'] = 1
+            self.assertEqual(self.bd['a'], 1)
 
         def test_by_value(self):
-            d = BiDict(a=1)
-            self.assertEqual(d[1], 'a')
+            self.bd['a'] = 1
+            self.assertEqual(self.bd[1], 'a')
 
         def test_not_existing(self):
-            d = BiDict()
             with self.assertRaises(KeyError):
-                d[0]
+                self.bd[0]
 
     class TestDelItem(unittest.TestCase):
+        def setUp(self):
+            self.bd = BiDict(a=1)
+
         def test_by_key(self):
-            d = BiDict(a=1)
-            del d['a']
-            self.assertEqual(d._storage, [])
+            del self.bd['a']
+            self.assertEqual(self.bd._storage, [])
 
         def test_by_value(self):
-            d = BiDict(a=1)
-            del d[1]
-            self.assertEqual(d._storage, [])
+            del self.bd[1]
+            self.assertEqual(self.bd._storage, [])
 
         def test_not_existing(self):
-            d = BiDict()
             with self.assertRaises(KeyError):
-                del d[0]
+                del self.bd[0]
 
     unittest.main()

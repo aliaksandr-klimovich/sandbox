@@ -42,6 +42,7 @@ if __name__ == '__main__':
     import unittest
 
     class TestBiDict(unittest.TestCase):
+
         def test_init(self):
             bd = bidict()
             self.assertEqual(bd, {})
