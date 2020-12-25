@@ -3,6 +3,7 @@
 
 def get_kaprekars_constant_equations(number, n=0):
     """
+    :param number: Input number.
     :param n: Max. iteration before leaving.
     """
     

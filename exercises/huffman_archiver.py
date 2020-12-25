@@ -72,3 +72,4 @@ print(f'text_decoded: {decoded}')
 print('\nText length: %i bits' % (len(text) * 8))
 print('Encoded text length: %i bits' % len(encoded))
 print('Table size: %i ?' % reduce(lambda s, i: 1 + len(i[1]) + s, table, 0))
+# todo check table size

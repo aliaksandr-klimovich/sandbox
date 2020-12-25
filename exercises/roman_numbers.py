@@ -1,17 +1,13 @@
-from collections import namedtuple
-import pytest
-
 # https://en.wikipedia.org/wiki/Roman_numerals
 # http://ph0enix.ru/romannums/
 
-Map = namedtuple('Map', 'arabic roman')
-
 # Ascendant order!
-#   First four rows for the arabic numbers form the logic pattern.
-#   1, 4, 5, 9. Next arabic numbers consist of these numbers + n zeros.
-#   10, 40, 50, 90.
-#   In current implementation the main accent is on the mapping structure,
-#     not the final algorithm.
+# First four rows for the arabic numbers form the logic pattern: 1, 4, 5, 9.
+# Next arabic numbers consist of these numbers (1 ,4 ,5, 9) + (n) zeros, e.g. 10, 40, 50, 90.
+# Current implementation's focus is on the mapping structure, not the final algorithm.
+
+import pytest
+
 
 mapping = (
     (1, 'I'),
@@ -31,57 +27,39 @@ mapping = (
 
     (1000, 'M'),
 )
-# Convert inner tuples to named tuples.
-mapping = tuple(map(lambda i: Map(*i), mapping))
 
 
-def arabic_to_roman(x):
+def arabic_to_roman(x: int) -> str:
     assert 0 < x < 4000
-
     i = len(mapping) - 1  # Last index of the `mapping`.
     result = []
-
     while i >= 0 and x > 0:
-
         while True:
-
-            arabic = mapping[i].arabic
-            roman = mapping[i].roman
-
+            arabic, roman = mapping[i]
             if x // arabic > 0:
                 x -= arabic
                 result.append(roman)
-
             else:
                 break
-
         i -= 1
-
     return ''.join(result)
 
 
-def roman_to_arabic(x):
-    assert isinstance(x, str)
-
+def roman_to_arabic(x: str) -> int:
     result = 0
     previous = None
-
     for letter in reversed(x):
-
-        for pair in mapping:
-            if pair.roman == letter:
-                current = pair.arabic
+        for arabic, roman in mapping:
+            if roman == letter:
+                current = arabic
                 break
         else:
             raise IndexError('Roman letter {} was not found in mapping.'.format(letter))
-
         if previous and previous > current:
             result -= current
         else:
             result += current
-
         previous = current
-
     return result
 
 
@@ -99,6 +77,7 @@ tests = [
     (11, 'XI'),
     (14, 'XIV'),
     (15, 'XV'),
+    (16, 'XVI'),
     (19, 'XIX'),
     (20, 'XX'),
     (49, 'XLIX'),
@@ -109,17 +88,15 @@ tests = [
     (3999, 'MMMCMXCIX'),
 ]
 
-reversed_tests = [(i[1], i[0]) for i in tests]
+
+@pytest.mark.parametrize('arabic, roman', tests)
+def test_arabic_to_roman(arabic, roman):
+    assert arabic_to_roman(arabic) == roman
 
 
-@pytest.mark.parametrize('input,expected_output', tests)
-def test_arabic_to_roman(input, expected_output):
-    assert arabic_to_roman(input) == expected_output
-
-
-@pytest.mark.parametrize('input,expected_output', reversed_tests)
-def test_roman_to_arabic(input, expected_output):
-    assert roman_to_arabic(input) == expected_output
+@pytest.mark.parametrize('arabic, roman', tests)
+def test_roman_to_arabic(arabic, roman):
+    assert roman_to_arabic(roman) == arabic
 
 
 pytest.main(['-q', '--tb=line', __file__])
