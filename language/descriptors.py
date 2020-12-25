@@ -1,3 +1,5 @@
+# todo refactor
+
 print('\nRead next article before start:')
 print('https://www.ibm.com/developerworks/library/os-pythondescriptors/index.html')
 
