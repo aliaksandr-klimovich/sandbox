@@ -18,7 +18,6 @@ if sys.version_info.major == 2:
                 yield i
 
 elif sys.version_info.major == 3:
-    from collections.abc import Iterable
 
     def flatten(iterable):
 
