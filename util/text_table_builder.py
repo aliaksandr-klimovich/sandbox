@@ -181,7 +181,7 @@ class TextTableBuilder:
         # build_and_print_immediately is not stored in class instance
 
         # Define private variables.
-        self._widths: List[int]
+        self._widths: list[int]
         self._top_row: str
         self._bottom_row: str
         self._delimiter: str
